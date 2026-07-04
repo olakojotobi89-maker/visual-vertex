@@ -1497,29 +1497,54 @@ transform:translateY(0);
 
 }
 /* ==========================================
-   MOBILE RESPONSIVE DESIGN
+   REAL MOBILE FIX (VISUAL VERTEX)
 ========================================== */
 
 @media (max-width: 1024px) {
 
+    /* HERO FIX */
+    #hero{
+        padding:140px 0 80px;
+    }
+
     .hero-grid{
         grid-template-columns:1fr;
+        gap:40px;
         text-align:center;
-        gap:50px;
     }
 
     .hero-content h1{
-        font-size:56px;
+        font-size:48px;
+        line-height:1.1;
+    }
+
+    .hero-content p{
+        margin:0 auto 30px;
+        font-size:15px;
     }
 
     .hero-buttons{
         justify-content:center;
+        flex-wrap:wrap;
     }
 
+    .hero-image img{
+        max-width:380px;
+    }
+
+    /* SECTION HEADINGS */
+    .section-heading h2,
+    .about-content h2,
+    .why-content h2{
+        font-size:40px;
+    }
+
+    /* GRIDS */
     .about-grid,
-    .why-grid{
+    .why-grid,
+    .contact-grid{
         grid-template-columns:1fr;
-        text-align:center;
+        gap:50px;
     }
 
     .services-grid{
@@ -1534,17 +1559,26 @@ transform:translateY(0);
         grid-template-columns:1fr;
     }
 
-    .contact-grid{
-        grid-template-columns:1fr;
+    .stats-grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
     .footer-grid{
         grid-template-columns:repeat(2,1fr);
     }
+
+    /* CTA */
+    .cta-box{
+        padding:60px 30px;
+    }
+
+    .cta-box h2{
+        font-size:40px;
+    }
 }
 
 /* ==========================================
-   TABLET / SMALLER DEVICES
+   TABLET / MOBILE NAV FIX
 ========================================== */
 
 @media (max-width: 768px) {
@@ -1557,15 +1591,18 @@ transform:translateY(0);
         position:fixed;
         top:0;
         right:-100%;
-        width:70%;
+        width:80%;
         height:100vh;
-        background:#111;
+        background:#0f0f0f;
         flex-direction:column;
-        align-items:flex-start;
         padding:100px 30px;
         gap:25px;
         transition:.4s ease;
         z-index:9999;
+    }
+
+    .nav-links a{
+        font-size:18px;
     }
 
     .nav-links.active{
@@ -1574,37 +1611,46 @@ transform:translateY(0);
 
     .menu-btn{
         display:block;
-        z-index:10000;
     }
 
+    /* HERO TEXT */
     .hero-content h1{
-        font-size:42px;
+        font-size:36px;
     }
 
-    .hero-content p{
-        font-size:15px;
+    .hero-image img{
+        max-width:300px;
     }
 
-    .services-grid{
-        grid-template-columns:1fr;
-    }
-
-    .portfolio-grid{
-        grid-template-columns:1fr;
-    }
-
+    /* GRIDS → SINGLE COLUMN FEEL */
+    .services-grid,
+    .portfolio-grid,
     .stats-grid{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:1fr;
     }
 
+    /* ABOUT / WHY */
+    .about-content h2,
+    .why-content h2{
+        font-size:32px;
+    }
+
+    .why-item{
+        flex-direction:column;
+        text-align:center;
+        align-items:center;
+    }
+
+    /* CTA */
     .cta-box{
-        padding:50px 25px;
+        padding:50px 20px;
     }
 
     .cta-box h2{
-        font-size:34px;
+        font-size:30px;
     }
 
+    /* FOOTER */
     .footer-grid{
         grid-template-columns:1fr;
         text-align:center;
@@ -1612,17 +1658,26 @@ transform:translateY(0);
 }
 
 /* ==========================================
-   SMALL PHONES
+   SMALL PHONES (REAL FIX)
 ========================================== */
 
 @media (max-width: 480px) {
 
+    #hero{
+        padding:120px 0 60px;
+    }
+
     .hero-content h1{
-        font-size:32px;
+        font-size:30px;
+    }
+
+    .hero-content p{
+        font-size:14px;
     }
 
     .hero-buttons{
         flex-direction:column;
+        width:100%;
     }
 
     .btn-primary,
@@ -1631,21 +1686,18 @@ transform:translateY(0);
         justify-content:center;
     }
 
-    .stats-grid{
-        grid-template-columns:1fr;
+    .hero-image img{
+        max-width:260px;
+    }
+
+    .section-heading h2,
+    .about-content h2,
+    .why-content h2{
+        font-size:26px;
     }
 
     .stat-card{
         padding:25px;
-    }
-
-    .section-heading h2{
-        font-size:32px;
-    }
-
-    .about-content h2,
-    .why-content h2{
-        font-size:32px;
     }
 
     .contact-form{
@@ -1653,6 +1705,6 @@ transform:translateY(0);
     }
 
     .cta-box h2{
-        font-size:28px;
+        font-size:24px;
     }
 }
