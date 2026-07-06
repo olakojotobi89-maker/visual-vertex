@@ -741,3 +741,136 @@ const navLinks = document.querySelector(".nav-links");
 menuBtn.addEventListener("click", () => {
     navLinks.classList.toggle("active");
 });
+/*==========================================
+Mobile Menu
+==========================================*/
+
+const menuBtn = document.querySelector(".menu-btn");
+const navLinks = document.querySelector(".nav-links");
+
+menuBtn.addEventListener("click", () => {
+
+    navLinks.classList.toggle("active");
+
+    menuBtn.classList.toggle("active");
+
+});
+/*==========================================
+Premium Navbar
+==========================================*/
+
+const header = document.querySelector("header");
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>80){
+
+header.classList.add("scrolled");
+
+}else{
+
+header.classList.remove("scrolled");
+
+}
+
+});
+/*==========================================
+Magnetic Buttons
+==========================================*/
+
+document.querySelectorAll(".btn-primary").forEach(button=>{
+
+button.addEventListener("mousemove",(e)=>{
+
+const rect=button.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+button.style.transform=
+
+`translate(
+${(x-rect.width/2)/12}px,
+${(y-rect.height/2)/12}px)`;
+
+});
+
+button.addEventListener("mouseleave",()=>{
+
+button.style.transform="translate(0,0)";
+
+});
+
+});
+/*==========================================
+3D Cards
+==========================================*/
+
+document.querySelectorAll(
+
+".service-card,.portfolio-card,.about-card"
+
+).forEach(card=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+const x=e.clientX-rect.left;
+
+const y=e.clientY-rect.top;
+
+const rotateX=(y-rect.height/2)/12;
+
+const rotateY=(rect.width/2-x)/12;
+
+card.style.transform=
+
+`perspective(1000px)
+rotateX(${rotateX}deg)
+rotateY(${rotateY}deg)
+translateY(-8px)`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="";
+
+});
+
+});
+/*==========================================
+Glow Mouse
+==========================================*/
+
+document.querySelectorAll(
+
+".service-card,.about-card,.portfolio-card"
+
+).forEach(card=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+const rect=card.getBoundingClientRect();
+
+card.style.setProperty(
+
+"--x",
+
+`${e.clientX-rect.left}px`
+
+);
+
+card.style.setProperty(
+
+"--y",
+
+`${e.clientY-rect.top}px`
+
+);
+
+});
+
+});
