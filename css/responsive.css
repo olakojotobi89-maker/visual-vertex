@@ -437,3 +437,120 @@ PREMIUM DECORATIVE EFFECTS
     }
 
 }
+
+/*==================================================
+MOBILE HERO REDESIGN — reference-matched layout
+Scope: phones + small tablets only (max-width:767px).
+The tablet (min-width:768px) and desktop hero grids
+declared earlier in this file, and the desktop hero
+rules in style.css, are completely untouched — this
+block only ever applies below 768px and is placed last
+so it safely wins over the 480px hero-button tweak
+above for phones in the 480–767px range.
+
+Order preserved: tagline -> headline -> paragraph ->
+CTA button(s) -> illustration, all left-aligned, with
+generous spacing between each element, matching the
+supplied reference screenshot.
+==================================================*/
+
+@media screen and (max-width:767px){
+
+    #hero{
+
+        /* Slightly tighter than the old centered version so the
+           left-aligned block doesn't feel like it's floating in
+           empty vertical space on short phone screens. */
+        padding:120px 0 70px;
+        min-height:auto;
+
+    }
+
+    .hero-grid{
+
+        display:flex;
+        flex-direction:column;
+
+        /* Left-align everything instead of the old centered stack */
+        align-items:flex-start;
+        justify-content:flex-start;
+        text-align:left;
+
+        gap:clamp(28px,7vw,40px);
+
+    }
+
+    .hero-content{
+
+        width:100%;
+        max-width:100%;
+
+    }
+
+    .small-title{
+
+        margin-bottom:clamp(14px,4vw,20px);
+
+    }
+
+    .hero-content h1{
+
+        /* Large, bold, impactful — but scaled to never overflow
+           or force awkward mid-word wraps at 320px. */
+        font-size:clamp(2.25rem,9vw,3.5rem);
+        line-height:1.05;
+        margin:0 0 clamp(18px,5vw,26px);
+        text-align:left;
+
+    }
+
+    .hero-content p{
+
+        text-align:left;
+        max-width:100%;
+        margin:0 0 clamp(28px,7vw,36px);
+        font-size:clamp(.95rem,3.6vw,1.0625rem);
+
+    }
+
+    .hero-buttons{
+
+        /* Reference shows a compact pill button, not a full-width
+           stretched one — scoped to the hero only, so buttons
+           elsewhere (CTA, contact form) keep their full-width
+           touch-friendly mobile behavior. */
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        width:auto;
+        margin-top:0;
+
+    }
+
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary{
+
+        width:auto;
+        min-width:0;
+        padding:16px 28px;
+
+    }
+
+    .hero-image{
+
+        /* Illustration sits beneath the text block on phones, with
+           generous breathing room above it; it naturally moves
+           beside the text once the 768px tablet layout takes over. */
+        width:100%;
+        margin-top:clamp(8px,3vw,16px);
+
+    }
+
+    .hero-image img{
+
+        width:100%;
+        max-width:clamp(200px,58vw,260px);
+
+    }
+
+}
