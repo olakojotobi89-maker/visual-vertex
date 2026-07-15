@@ -1678,6 +1678,11 @@ FOOTER
     grid-template-columns:1fr;
     gap:40px;
     margin-bottom:45px;
+    width:100%;
+    /* FIX: grid items default to min-width:auto, which sizes them to their
+       content's intrinsic (unbroken) width instead of the grid track width.
+       min-width:0 lets each column actually shrink to fit the viewport. */
+    min-width:0;
 
 }
 
@@ -1686,12 +1691,19 @@ FOOTER
     display:flex;
     flex-direction:column;
     align-items:center;
+    width:100%;
+    max-width:100%;
+    /* FIX: same min-width:auto default applies to flex items — without this,
+       the column (and its paragraph) refuses to shrink below its content's
+       natural width, forcing the footer wider than the screen. */
+    min-width:0;
 
 }
 
 .footer-logo{
 
     width:150px;
+    max-width:100%;
     margin:0 auto 20px;
 
 }
@@ -1701,8 +1713,21 @@ FOOTER
     color:#bdbdbd;
     line-height:1.9;
     margin-bottom:24px;
-    max-width:480px;
+    /* FIX: was a fixed max-width:480px with nothing forcing it to respect a
+       narrower parent on small phones. Now it's always relative to its
+       actual container, so it can never be wider than the viewport. */
+    width:100%;
+    max-width:min(480px,100%);
     font-size:15px;
+    /* FIX: this is the actual overflow trigger — any long, unbreakable word
+       or string in the description (e.g. a URL or run-together phrase) had
+       no way to break, so it pushed the layout past the viewport edge.
+       These three properties (with fallbacks for older browsers) make sure
+       long words wrap onto the next line instead of overflowing. */
+    overflow-wrap:break-word;
+    word-wrap:break-word;
+    word-break:break-word;
+    hyphens:auto;
 
 }
 
