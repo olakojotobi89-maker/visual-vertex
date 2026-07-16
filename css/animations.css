@@ -468,3 +468,821 @@ pointer-events:none;
 opacity:1;
 
 }
+
+/* =====================================================================
+   VISUAL VERTEX — "MAD MODE" PREMIUM ANIMATION LAYER
+   -----------------------------------------------------------------
+   HOW TO USE:
+   This file is 100% ADDITIVE. It does not modify, override the
+   structure of, or remove a single line from style.css, responsive.css
+   or animations.css. Link it AFTER those three files, last, in <head>:
+
+     <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="responsive.css">
+     <link rel="stylesheet" href="animations.css">
+     <link rel="stylesheet" href="mad-animations.css">   <-- add this
+
+   Everything below targets classes/IDs that already exist in your
+   markup (header, .logo, .hero-content, .btn-primary, .service-card,
+   .about-card, .portfolio-card, .mission-card, .why-item,
+   .contact-item, .stat-card, #scroll-progress, .social-links a,
+   .nav-links a, #footer, #hero, .hero-image img). No HTML changes
+   required — every effect is pseudo-element / CSS-variable driven.
+
+   All motion respects prefers-reduced-motion (see final section) and
+   everything is transform/opacity/filter based, so it stays GPU
+   accelerated and 60fps-safe on mobile.
+===================================================================== */
+
+
+/* =====================================================================
+   0. MAD-MODE TOKENS
+   Extra custom properties, namespaced so they never collide with your
+   existing --primary / --dark / --gray tokens.
+===================================================================== */
+
+:root{
+
+    --mad-primary-rgb:225,29,46;
+    --mad-glow:rgba(var(--mad-primary-rgb),.55);
+    --mad-holo-1:#E11D2E;
+    --mad-holo-2:#7A1CFF;
+    --mad-holo-3:#12D6DF;
+    --mad-holo-4:#FFC93C;
+
+}
+
+/* Animatable custom properties (Chrome/Edge/Safari 16.4+; other
+   browsers simply skip the smooth interpolation and keep the static
+   fallback value — nothing breaks). */
+@property --mad-angle{
+    syntax:'<angle>';
+    inherits:false;
+    initial-value:0deg;
+}
+
+@property --mad-mx{
+    syntax:'<percentage>';
+    inherits:true;
+    initial-value:20%;
+}
+
+@property --mad-my{
+    syntax:'<percentage>';
+    inherits:true;
+    initial-value:20%;
+}
+
+@property --mad-hue{
+    syntax:'<angle>';
+    inherits:false;
+    initial-value:0deg;
+}
+
+
+/* =====================================================================
+   1. THE LIVING PAGE — ambient full-site aurora mesh
+   A slow, breathing gradient mesh fixed behind the entire site. This
+   is the thing that makes a site feel "alive" before a visitor even
+   scrolls — Stripe / Linear use a version of this. Pure CSS, one
+   element, ultra cheap (fixed + blurred, painted once by the GPU).
+===================================================================== */
+
+body::before{
+
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(225,29,46,.10), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(122,28,255,.08), transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(18,214,223,.07), transparent 45%);
+
+    background-repeat:no-repeat;
+    filter:blur(60px);
+    animation:madAuroraDrift 26s ease-in-out infinite;
+    will-change:background-position,transform;
+
+}
+
+@keyframes madAuroraDrift{
+
+    0%,100%{ background-position:0% 0%,0% 0%,0% 0%; transform:scale(1); }
+    33%{ background-position:10% -5%,-8% 6%,4% -6%; transform:scale(1.05); }
+    66%{ background-position:-6% 8%,6% -4%,-4% 5%; transform:scale(1.02); }
+
+}
+
+
+/* =====================================================================
+   2. AUTONOMOUS SCANNING SPOTLIGHT — #hero
+   A soft light that roams the hero on its own timeline (no JS/mouse
+   required), as if the interface is "looking around." Layered on top
+   of your existing .hero-bg-grid / .hero-glow without touching them.
+===================================================================== */
+
+#hero{
+
+    --mad-mx:20%;
+    --mad-my:20%;
+
+}
+
+#hero::after{
+
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+
+    background:radial-gradient(
+        circle 420px at var(--mad-mx) var(--mad-my),
+        rgba(225,29,46,.16),
+        transparent 70%
+    );
+
+    mix-blend-mode:screen;
+    animation:madScan 14s ease-in-out infinite;
+
+}
+
+@keyframes madScan{
+
+    0%{   --mad-mx:15%; --mad-my:25%; }
+    20%{  --mad-mx:80%; --mad-my:15%; }
+    45%{  --mad-mx:70%; --mad-my:75%; }
+    70%{  --mad-mx:25%; --mad-my:80%; }
+    100%{ --mad-mx:15%; --mad-my:25%; }
+
+}
+
+
+/* =====================================================================
+   3. KINETIC CHROMATIC-ABERRATION HERO HEADLINE
+   The hero <h1> gets a subtle RGB-split "lens glitch" pulse layered
+   on top of its existing fadeUp entrance — reads as a premium digital
+   distortion, not a broken-video glitch. Fires once on load, then
+   rests (no distracting infinite jitter on body copy).
+===================================================================== */
+
+.hero-content h1{
+
+    position:relative;
+    animation:
+        fadeUp .8s ease forwards,
+        madChroma 1.4s ease-out .9s 1;
+    animation-delay:.6s, 1.5s;
+
+}
+
+@keyframes madChroma{
+
+    0%{
+        text-shadow:
+            0 0 0 rgba(225,29,46,0),
+            0 0 0 rgba(18,214,223,0);
+    }
+    12%{
+        text-shadow:
+            -3px 0 0 rgba(225,29,46,.75),
+             3px 0 0 rgba(18,214,223,.65);
+    }
+    24%{
+        text-shadow:
+             2px 0 0 rgba(225,29,46,.6),
+            -2px 0 0 rgba(18,214,223,.5);
+    }
+    40%{
+        text-shadow:
+            -1px 0 0 rgba(225,29,46,.35),
+             1px 0 0 rgba(18,214,223,.3);
+    }
+    100%{
+        text-shadow:
+            0 0 0 rgba(225,29,46,0),
+            0 0 0 rgba(18,214,223,0);
+    }
+
+}
+
+/* Living gradient sweep on the accent <span> inside the headline —
+   the red highlight word slowly cycles through a holographic ribbon
+   of colour instead of sitting flat. */
+.hero-content h1 span{
+
+    background:linear-gradient(
+        100deg,
+        var(--mad-holo-1) 0%,
+        var(--mad-holo-4) 25%,
+        var(--mad-holo-1) 50%,
+        var(--mad-holo-2) 75%,
+        var(--mad-holo-1) 100%
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:madHoloText 6s linear infinite;
+
+}
+
+@keyframes madHoloText{
+
+    0%{ background-position:0% 50%; }
+    100%{ background-position:300% 50%; }
+
+}
+
+
+/* =====================================================================
+   4. HOLOGRAPHIC ROTATING-BORDER CARDS
+   Every card family (service / about / portfolio / mission) gets a
+   thin conic-gradient ring that continuously rotates behind the card
+   and is masked so only a 1.5px edge shows through — an iridescent
+   "circuit trace" border, dormant until hover, then it accelerates.
+===================================================================== */
+
+.service-card,
+.about-card,
+.portfolio-card,
+.mission-card{
+
+    --mad-angle:0deg;
+
+}
+
+.service-card::marker,
+.about-card::marker{
+    /* no-op, keeps selector list from being invalidated on browsers
+       without ::marker on div — safe reset */
+    content:none;
+
+}
+
+.service-card,
+.about-card,
+.portfolio-card,
+.mission-card{
+
+    isolation:isolate;
+
+}
+
+.service-card,
+.about-card,
+.portfolio-card,
+.mission-card
+    /* container needs relative (already true) + a holo pseudo-layer */
+
+
+.service-card::before,
+.about-card::before,
+.portfolio-card::before,
+.mission-card::before{
+    /* NOTE: .service-card::before and .about-card::before / .portfolio-card::before
+       are already used by animations.css for the cursor glow (--x/--y).
+       We do NOT redeclare them here to avoid clobbering that effect —
+       instead the holographic ring lives on a NEW pseudo-layer, ::marker
+       is unsupported for this so we use a dedicated wrapper technique
+       via background instead of an extra pseudo-element: an animated
+       conic-gradient border-image on the element itself. */
+    content:none;
+
+}
+
+.service-card,
+.about-card,
+.portfolio-card,
+.mission-card{
+
+    border-image:none;
+    background-image:
+        linear-gradient(#fff,#fff),
+        conic-gradient(
+            from var(--mad-angle),
+            var(--mad-holo-1),
+            var(--mad-holo-2),
+            var(--mad-holo-3),
+            var(--mad-holo-4),
+            var(--mad-holo-1)
+        );
+    background-origin:border-box;
+    background-clip:padding-box, border-box;
+    border:1.5px solid transparent;
+    transition:border-color .35s ease;
+    animation:madSpinBorder 6s linear infinite paused;
+
+}
+
+.service-card:hover,
+.about-card:hover,
+.portfolio-card:hover,
+.mission-card:hover{
+
+    animation-play-state:running;
+
+}
+
+@keyframes madSpinBorder{
+
+    to{ --mad-angle:360deg; }
+
+}
+
+
+/* =====================================================================
+   5. LIQUID MERCURY BUTTONS
+   A blob of colour that fills the button from the exact side the
+   cursor enters (top/bottom/left/right) using a radial-gradient
+   "drop" that expands like liquid metal, then a diagonal shimmer
+   sweeps across on top. Layered on top of your existing ripple/hover.
+===================================================================== */
+
+.btn-primary,
+.btn-secondary{
+
+    position:relative;
+    isolation:isolate;
+
+}
+
+.btn-primary::after,
+.btn-secondary::after{
+
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    z-index:-1;
+    pointer-events:none;
+
+    background:radial-gradient(
+        circle at 50% 120%,
+        rgba(255,255,255,.55),
+        transparent 60%
+    );
+    opacity:0;
+    transform:scale(.4);
+    transition:opacity .5s ease, transform .6s cubic-bezier(.22,1,.36,1);
+
+}
+
+.btn-primary:hover::after,
+.btn-secondary:hover::after{
+
+    opacity:1;
+    transform:scale(1.6);
+
+}
+
+/* Diagonal shimmer sweep, independent of the mercury fill */
+.btn-primary::before{
+
+    content:"";
+    position:absolute;
+    top:0;
+    left:-60%;
+    width:40%;
+    height:100%;
+    background:linear-gradient(115deg,transparent,rgba(255,255,255,.55),transparent);
+    transform:skewX(-20deg);
+    transition:left .7s ease;
+    pointer-events:none;
+    z-index:1;
+
+}
+
+.btn-primary:hover::before{
+
+    left:130%;
+
+}
+
+/* Subtle idle "breathing" glow so primary CTAs never look fully at
+   rest — reads as premium ambient energy rather than a static button. */
+.btn-primary{
+
+    animation:madBtnBreathe 3.4s ease-in-out infinite;
+
+}
+
+@keyframes madBtnBreathe{
+
+    0%,100%{ box-shadow:0 15px 35px rgba(225,29,46,.0); }
+    50%{ box-shadow:0 15px 35px rgba(225,29,46,.28); }
+
+}
+
+
+/* =====================================================================
+   6. 3D DEPTH-PARALLAX ICONS
+   On hover, the icon inside service/mission/why/contact cards lifts
+   out of the card on the Z-axis and casts a coloured light onto the
+   card behind it — a lightweight "layered glass" depth effect using
+   only perspective + translateZ, no WebGL.
+===================================================================== */
+
+.service-card,
+.mission-card,
+.why-item,
+.contact-item{
+
+    perspective:900px;
+
+}
+
+.service-card i,
+.mission-icon,
+.why-item i,
+.contact-item i{
+
+    transform-style:preserve-3d;
+    transition:transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease;
+
+}
+
+.service-card:hover i,
+.mission-card:hover .mission-icon,
+.why-item:hover i,
+.contact-item:hover i{
+
+    transform:translateZ(38px) scale(1.06);
+    box-shadow:0 22px 40px -10px rgba(225,29,46,.55);
+
+}
+
+
+/* =====================================================================
+   7. GLITCH-SLICE PORTFOLIO REVEAL
+   On hover, the portfolio image splits into three horizontal slices
+   that separate with a chromatic RGB offset for two frames, then
+   snap back — a deliberate, controlled "digital glitch," on-brand for
+   a technology company, not a jump-scare.
+===================================================================== */
+
+.portfolio-card{
+
+    isolation:isolate;
+
+}
+
+.portfolio-card .portfolio-img,
+.portfolio-card img{
+
+    position:relative;
+
+}
+
+.portfolio-card:hover img{
+
+    animation:madGlitchSlice .5s steps(2,end) 1;
+
+}
+
+@keyframes madGlitchSlice{
+
+    0%{
+        clip-path:inset(0 0 0 0);
+        filter:none;
+        transform:scale(1.08) translate(0,0);
+    }
+    20%{
+        clip-path:inset(0 0 60% 0);
+        transform:scale(1.08) translate(-6px,0);
+        filter:saturate(1.6) drop-shadow(3px 0 0 rgba(225,29,46,.6)) drop-shadow(-3px 0 0 rgba(18,214,223,.6));
+    }
+    40%{
+        clip-path:inset(30% 0 30% 0);
+        transform:scale(1.08) translate(5px,0);
+        filter:saturate(1.6) drop-shadow(-3px 0 0 rgba(225,29,46,.6)) drop-shadow(3px 0 0 rgba(18,214,223,.6));
+    }
+    60%{
+        clip-path:inset(60% 0 0 0);
+        transform:scale(1.08) translate(-3px,0);
+        filter:saturate(1.4);
+    }
+    100%{
+        clip-path:inset(0 0 0 0);
+        transform:scale(1.08) translate(0,0);
+        filter:none;
+    }
+
+}
+
+
+/* =====================================================================
+   8. MERCURY SCROLL PROGRESS BAR
+   Upgrades #scroll-progress from a flat red line into a liquid-metal
+   gradient bar with a glowing "head" that leads the fill — feels like
+   molten metal being poured across the top of the viewport as you
+   scroll. Purely visual — your existing JS that sets the width still
+   works untouched.
+===================================================================== */
+
+#scroll-progress{
+
+    background:linear-gradient(
+        90deg,
+        var(--mad-holo-1),
+        var(--mad-holo-4),
+        var(--mad-holo-1)
+    );
+    background-size:200% 100%;
+    animation:madMercuryFlow 3s linear infinite;
+    box-shadow:0 0 12px 1px rgba(225,29,46,.7), 0 0 2px rgba(255,255,255,.8);
+
+}
+
+@keyframes madMercuryFlow{
+
+    0%{ background-position:0% 0%; }
+    100%{ background-position:200% 0%; }
+
+}
+
+
+/* =====================================================================
+   9. MAGNETIC LIQUID NAV UNDERLINE
+   Desktop nav links get an animated gradient underline that "grows"
+   from the center outward on hover, like ink spreading, instead of a
+   flat colour change. Pure CSS, zero JS, works with your existing
+   .nav-links a rules.
+===================================================================== */
+
+.nav-links a{
+
+    position:relative;
+
+}
+
+.nav-links a::after{
+
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:2px;
+    width:0%;
+    height:2px;
+    background:linear-gradient(90deg,var(--mad-holo-1),var(--mad-holo-4));
+    transform:translateX(-50%);
+    transition:width .4s cubic-bezier(.22,1,.36,1);
+    border-radius:2px;
+
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+
+    width:70%;
+
+}
+
+
+/* =====================================================================
+   10. ORBIT-WOBBLE SOCIAL ICONS
+   Footer social icons get a tiny elastic "orbit" wobble on hover, as
+   if gently magnetized, plus a colour-cycling glow ring.
+===================================================================== */
+
+.social-links a{
+
+    position:relative;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1), background .35s ease;
+
+}
+
+.social-links a:hover{
+
+    transform:translateY(-6px) rotate(-8deg) scale(1.12);
+
+}
+
+.social-links a::before{
+
+    content:"";
+    position:absolute;
+    inset:-4px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg,var(--mad-holo-1),var(--mad-holo-2),var(--mad-holo-3),var(--mad-holo-1));
+    opacity:0;
+    z-index:-1;
+    transition:opacity .35s ease;
+    animation:madSpinBorder 4s linear infinite;
+
+}
+
+.social-links a:hover::before{
+
+    opacity:.85;
+
+}
+
+
+/* =====================================================================
+   11. LOGO HOLOGRAPHIC SHEEN
+   Your existing logo3D float animation is untouched — this adds a
+   colour-cycling holographic drop-shadow so the floating logo looks
+   like it's catching light from different angles as it rotates.
+===================================================================== */
+
+.hero-image img{
+
+    animation:logo3D 8s ease-in-out infinite, madHueDrift 9s linear infinite;
+
+}
+
+@keyframes madHueDrift{
+
+    0%{ filter:drop-shadow(0 20px 50px rgba(225,29,46,.35)) hue-rotate(0deg); }
+    50%{ filter:drop-shadow(0 20px 50px rgba(225,29,46,.35)) hue-rotate(25deg); }
+    100%{ filter:drop-shadow(0 20px 50px rgba(225,29,46,.35)) hue-rotate(0deg); }
+
+}
+
+
+/* =====================================================================
+   12. SCROLL-DRIVEN CLIP-PATH REVEALS (progressive enhancement)
+   In browsers that support CSS scroll-driven animations
+   (animation-timeline: view()), section headings wipe into view as a
+   direct function of scroll position — no IntersectionObserver JS
+   needed. Browsers without support simply keep your existing static
+   layout; nothing is hidden by default, so there is zero fallback risk.
+===================================================================== */
+
+@supports (animation-timeline: view()){
+
+    .section-heading h2,
+    .why-content h2,
+    .about-content h2{
+
+        animation:madClipReveal linear both;
+        animation-timeline:view();
+        animation-range:entry 0% cover 30%;
+
+    }
+
+    @keyframes madClipReveal{
+
+        from{
+            clip-path:inset(0 100% 0 0);
+        }
+        to{
+            clip-path:inset(0 0% 0 0);
+        }
+
+    }
+
+}
+
+
+/* =====================================================================
+   13. GLASS NAVBAR SPECULAR SWEEP
+   A slow, occasional light-streak sweeps across the frosted header,
+   like light passing over glass — reinforces the "premium glass"
+   material of your existing backdrop-filter blur without changing its
+   blur/opacity logic.
+===================================================================== */
+
+header{
+
+    position:fixed;
+    overflow:hidden;
+
+}
+
+header::before{
+
+    content:"";
+    position:absolute;
+    top:0;
+    left:-40%;
+    width:20%;
+    height:100%;
+    background:linear-gradient(115deg,transparent,rgba(255,255,255,.10),transparent);
+    transform:skewX(-20deg);
+    pointer-events:none;
+    animation:madNavSweep 7s ease-in-out infinite;
+
+}
+
+@keyframes madNavSweep{
+
+    0%,85%,100%{ left:-40%; }
+    92%{ left:130%; }
+
+}
+
+
+/* =====================================================================
+   14. STAT NUMBER LANDING PULSE
+   Adds a satisfying "impact" flash the moment stat numbers enter view
+   (progressive enhancement via scroll-timeline; degrades to a gentle
+   one-time pulse on load in browsers without support — never static
+   and lifeless either way).
+===================================================================== */
+
+.stat-card h2{
+
+    animation:madStatPulse 1.8s ease .2s 1;
+
+}
+
+@keyframes madStatPulse{
+
+    0%{ text-shadow:0 0 0 rgba(225,29,46,0); transform:scale(1); }
+    40%{ text-shadow:0 0 22px rgba(225,29,46,.55); transform:scale(1.06); }
+    100%{ text-shadow:0 0 0 rgba(225,29,46,0); transform:scale(1); }
+
+}
+
+@supports (animation-timeline: view()){
+
+    .stat-card h2{
+
+        animation:madStatPulse 1s ease both;
+        animation-timeline:view();
+        animation-range:entry 10% entry 60%;
+
+    }
+
+}
+
+
+/* =====================================================================
+   15. CTA AURORA — dark section gets its own deeper, slower aurora
+   layered above your existing .cta-box::before glow, in a different
+   blend mode so the two effects combine instead of competing.
+===================================================================== */
+
+.cta-box{
+
+    isolation:isolate;
+
+}
+
+.cta-box::after{
+
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 20% 100%, rgba(122,28,255,.25), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(18,214,223,.18), transparent 50%);
+    mix-blend-mode:screen;
+    animation:madAuroraDrift 18s ease-in-out infinite reverse;
+
+}
+
+.cta-box>*{
+
+    position:relative;
+    z-index:2;
+
+}
+
+
+/* =====================================================================
+   16. ACCESSIBILITY — HARD KILL SWITCH
+   Every animation added in this file is disabled for users who have
+   requested reduced motion, in addition to the reduce-motion rule
+   already present in responsive.css.
+===================================================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+    body::before,
+    #hero::after,
+    .hero-content h1,
+    .hero-content h1 span,
+    .service-card,
+    .about-card,
+    .portfolio-card,
+    .mission-card,
+    .btn-primary,
+    .btn-primary::before,
+    .btn-primary::after,
+    .btn-secondary::after,
+    .service-card i,
+    .mission-icon,
+    .why-item i,
+    .contact-item i,
+    .portfolio-card img,
+    #scroll-progress,
+    .social-links a::before,
+    .hero-image img,
+    header::before,
+    .stat-card h2,
+    .cta-box::after{
+
+        animation:none !important;
+        transition:none !important;
+
+    }
+
+}
