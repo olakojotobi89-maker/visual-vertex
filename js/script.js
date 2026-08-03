@@ -25,6 +25,163 @@ document.addEventListener("DOMContentLoaded", () => {
     ==============================*/
 
     const header = document.querySelector("header");
+    const menuBtn = document.querySelector(".menu-btn");
+    const navLinks = document.querySelector(".nav-links");
+    const body = document.body;
+    let overlay = document.querySelector(".nav-overlay");
+
+    if (!overlay) {
+
+        overlay = document.createElement("div");
+        overlay.className = "nav-overlay";
+        document.body.appendChild(overlay);
+
+    }
+
+    const closeMobileMenu = () => {
+
+        if (navLinks) {
+
+            navLinks.classList.remove("active");
+        }
+
+        if (menuBtn) {
+
+            menuBtn.classList.remove("active");
+            menuBtn.setAttribute("aria-expanded", "false");
+        }
+
+        if (overlay) {
+
+            overlay.classList.remove("show");
+        }
+
+        body.classList.remove("menu-open");
+
+    };
+
+    const openMobileMenu = () => {
+
+        if (navLinks) {
+
+            navLinks.classList.add("active");
+        }
+
+        if (menuBtn) {
+
+            menuBtn.classList.add("active");
+            menuBtn.setAttribute("aria-expanded", "true");
+        }
+
+        if (overlay) {
+
+            overlay.classList.add("show");
+        }
+
+        body.classList.add("menu-open");
+
+    };
+
+    const toggleMobileMenu = (event) => {
+
+        if (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+        }
+
+        if (navLinks.classList.contains("active")) {
+
+            closeMobileMenu();
+
+        } else {
+
+            openMobileMenu();
+
+        }
+
+    };
+
+    if (menuBtn && navLinks) {
+
+        let lastMenuToggle = 0;
+
+        const safeToggleMobileMenu = (event) => {
+
+            const now = Date.now();
+            if (now - lastMenuToggle < 300) return;
+            lastMenuToggle = now;
+
+            toggleMobileMenu(event);
+
+        };
+
+        menuBtn.addEventListener("click", safeToggleMobileMenu);
+        menuBtn.addEventListener("touchstart", safeToggleMobileMenu, { passive: false });
+
+        navLinks.querySelectorAll("a").forEach(link => {
+
+            link.addEventListener("click", () => {
+
+                closeMobileMenu();
+
+            });
+
+            link.addEventListener("touchstart", () => {
+
+                closeMobileMenu();
+
+            }, { passive: true });
+
+        });
+
+        if (overlay) {
+
+            overlay.addEventListener("click", closeMobileMenu);
+            overlay.addEventListener("touchstart", closeMobileMenu, { passive: false });
+
+        }
+
+        document.addEventListener("keydown", (event) => {
+
+            if (event.key === "Escape") {
+
+                closeMobileMenu();
+
+            }
+
+        });
+
+        document.addEventListener("click", (event) => {
+
+            const clickedInsideMenu = navLinks.contains(event.target);
+            const clickedMenuButton = menuBtn.contains(event.target);
+
+            if (
+                window.innerWidth <= 992 &&
+                navLinks.classList.contains("active") &&
+                !clickedInsideMenu &&
+                !clickedMenuButton
+            ) {
+
+                closeMobileMenu();
+
+            }
+
+        });
+
+        window.addEventListener("resize", () => {
+
+            if (window.innerWidth > 992) {
+
+                closeMobileMenu();
+
+            }
+
+        });
+
+    }
 
     window.addEventListener("scroll", () => {
 
@@ -243,7 +400,7 @@ card.style.transform=
 
     const sections = document.querySelectorAll("section");
 
-    const navLinks = document.querySelectorAll(".nav-links a");
+    const navLinkItems = document.querySelectorAll(".nav-links a");
 
     window.addEventListener("scroll", () => {
 
@@ -261,7 +418,7 @@ card.style.transform=
 
         });
 
-        navLinks.forEach(link => {
+        navLinkItems.forEach(link => {
 
             link.classList.remove("active");
 
@@ -275,7 +432,7 @@ card.style.transform=
 
     });
 
-});
+} ;
 
 /* ==========================================
    Premium Hover Effects
@@ -735,21 +892,6 @@ document.addEventListener("mouseleave", () => {
 
 });
 
-const menuBtn = document.querySelector(".menu-btn");
-const navLinks = document.querySelector(".nav-links");
-
-/*==========================================
-Mobile Menu
-==========================================*/
-
-
-menuBtn.addEventListener("click", () => {
-
-    navLinks.classList.toggle("active");
-
-    menuBtn.classList.toggle("active");
-
-});
 /*==========================================
 Premium Navbar
 ==========================================*/
