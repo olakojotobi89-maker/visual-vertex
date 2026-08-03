@@ -206,30 +206,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const backToTop = document.getElementById("backToTop");
 
-    window.addEventListener("scroll", () => {
+    if (backToTop) {
 
-        if (window.scrollY > 500) {
+        window.addEventListener("scroll", () => {
 
-            backToTop.classList.add("show");
+            if (window.scrollY > 500) {
 
-        } else {
+                backToTop.classList.add("show");
 
-            backToTop.classList.remove("show");
+            } else {
 
-        }
+                backToTop.classList.remove("show");
 
-    });
-
-    backToTop.addEventListener("click", () => {
-
-        window.scrollTo({
-
-            top: 0,
-            behavior: "smooth"
+            }
 
         });
 
-    });
+        backToTop.addEventListener("click", () => {
+
+            window.scrollTo({
+
+                top: 0,
+                behavior: "smooth"
+
+            });
+
+        });
+
+    }
 
 
     /*==============================
@@ -432,7 +436,7 @@ card.style.transform=
 
     });
 
-} ;
+});
 
 /* ==========================================
    Premium Hover Effects
@@ -766,12 +770,16 @@ Cursor Glow
 
 const glow = document.querySelector(".cursor-glow");
 
-document.addEventListener("mousemove", (e) => {
+if (glow) {
 
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
+    document.addEventListener("mousemove", (e) => {
 
-});
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+
+    });
+
+}
 /*==========================================
 Hero Particles (Setup)
 ==========================================*/
@@ -873,24 +881,28 @@ Animate Particles
 }
 const heroLogo = document.querySelector(".hero-image img");
 
-document.addEventListener("mousemove", (e) => {
+if (heroLogo) {
 
-    const x = (window.innerWidth / 2 - e.clientX) / 40;
-    const y = (window.innerHeight / 2 - e.clientY) / 40;
+    document.addEventListener("mousemove", (e) => {
 
-    heroLogo.style.transform = `
-        rotateY(${-x}deg)
-        rotateX(${y}deg)
-        translateY(-8px)
-    `;
+        const x = (window.innerWidth / 2 - e.clientX) / 40;
+        const y = (window.innerHeight / 2 - e.clientY) / 40;
 
-});
+        heroLogo.style.transform = `
+            rotateY(${-x}deg)
+            rotateX(${y}deg)
+            translateY(-8px)
+        `;
 
-document.addEventListener("mouseleave", () => {
+    });
 
-    heroLogo.style.transform = "";
+    document.addEventListener("mouseleave", () => {
 
-});
+        heroLogo.style.transform = "";
+
+    });
+
+}
 
 /*==========================================
 Premium Navbar
