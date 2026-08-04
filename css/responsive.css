@@ -258,6 +258,10 @@ Breakpoints:
         backdrop-filter:none;
         gap:35px;
         padding:0;
+        transform:none;
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
 
     }
 
