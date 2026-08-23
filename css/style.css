@@ -1182,9 +1182,15 @@ body.menu-open {
   }
 
   .hero-image {
-    order: -1;
-    max-width: 320px;
+    max-width: 220px;
     margin-inline: auto;
+    margin-top: 8px;
+  }
+
+  #hero::before {
+    background:
+      radial-gradient(320px circle at 50% 15%, rgba(216, 27, 44, 0.2), transparent 65%),
+      radial-gradient(260px circle at 50% 90%, rgba(216, 27, 44, 0.12), transparent 65%);
   }
 
   .about-grid,
