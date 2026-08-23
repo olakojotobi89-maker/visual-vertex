@@ -490,7 +490,7 @@ body.menu-open {
 
 .hero-image img {
   width: 100%;
-  max-width: 480px;
+  max-width: auto;
   margin-inline: auto;
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.45));
 }
