@@ -326,8 +326,8 @@ header .btn-secondary:hover,
 }
 
 .logo img {
-  height: 32px;
-  width: auto;
+  width: clamp(128px, 18vw, 176px);
+  height: auto;
 }
 
 .nav-links {
@@ -1009,7 +1009,8 @@ body.menu-open {
 }
 
 .footer-logo {
-  height: 30px;
+  width: min(176px, 100%);
+  height: auto;
   margin-bottom: 16px;
 }
 
